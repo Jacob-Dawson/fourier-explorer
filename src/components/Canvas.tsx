@@ -15,7 +15,6 @@ interface CanvsasProps{
     onTouchEnd: (e: React.TouchEvent) => void;
 }
 
-
 // Canvas Dawing Helpers
 
 function drawGrid(canvas: HTMLCanvasElement){
@@ -154,7 +153,7 @@ export default function Canvas({
     }, [canvasRef, rawPoints, sampledPoints, isDrawing]);
 
     return (
-        <div className="flex-1 relative overflow-hidden">
+        <div className="absolute inset-0">
 
             {/*Hint shown when canvas is empty*/}
             {rawPoints.length === 0 && !isDrawing && (

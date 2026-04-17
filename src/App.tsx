@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import type { FreqComponent } from "./types";
 import { computeDFT } from "./utils/dft";
 import { useDrawing } from "./hooks/useDrawing";
+import { useEpicycles } from "./hooks/useEpicycles";
 import Canvas from "./components/Canvas";
 import Sidebar from "./components/Sidebar";
 import Spectrum from "./components/Spectrum";
+import EpicycleCanvas from "./components/EpicycleCanvas";
 
-type Phase = "draw" | "ready" | "dft";
+type Phase = "draw" | "ready" | "dft" | "animate";
 
 export default function App() {
 
@@ -24,6 +26,18 @@ export default function App() {
     clear
   } = useDrawing();
 
+  const {
+    isPlaying,
+    speed,
+    circleCount,
+    showCircles,
+    play,
+    pause,
+    setSpeed,
+    setCircleCount,
+    toggleCircles
+  } = useEpicycles(dftResult?.length ?? 256)
+
   // When a new path is finished, advance to ready
 
   useEffect(() => {
@@ -39,11 +53,26 @@ export default function App() {
     setPhase("dft");
   };
 
+  const handleAnimate = () => {
+
+    setPhase("animate");
+
+  }
+
   const handleClear = () => {
     clear();
     setDftResult(null);
     setPhase("draw");
   }
+
+  const stepNumber = 
+    phase === "animate" ? "03" :
+    phase === "dft" ? "02" : "01";
+
+  const stepLabel = 
+    phase === "animate" ? "Animating" :
+    phase === "dft" ? "DFT Computed" :
+    phase === "ready" ? "Path Ready" : "Draw Mode";
   
   return (
     <div
@@ -71,12 +100,12 @@ export default function App() {
             <span>
               Step{" "}
               <span className="text-amber-400 font-bold">
-                  {phase === "dft" ? "02" : "01"}
+                  {stepNumber}
               </span>
               {" / "}04
             </span>
             <span>
-              {phase === "dft" ? "DFT Computed" : phase === "ready" ? "Path Ready" : "Draw Mode"}
+                {stepLabel}
             </span>
         </div>
       </header>
@@ -89,23 +118,51 @@ export default function App() {
           rawPointCount={rawPoints.length}
           sampledPointCount={sampledPoints?.length ?? null}
           dftResult={dftResult}
+          isPlaying={isPlaying}
+          speed={speed}
+          circleCount={circleCount}
+          showCircles={showCircles}
           onRunDFT={handleRunDFT}
+          onAnimate={handleAnimate}
           onClear={handleClear}
+          onPlay={play}
+          onPause={pause}
+          onSetSpeed={setSpeed}
+          onSetCircleCount={setCircleCount}
+          onToggleCircles={toggleCircles}
         />
 
-        <Canvas
-          canvasRef={canvasRef}
-          rawPoints={rawPoints}
-          sampledPoints={sampledPoints}
-          isDrawing={isDrawing}
-          onMouseDown={startDraw}
-          onMouseMove={continueDraw}
-          onMouseUp={endDraw}
-          onMouseLeave={endDraw}
-          onTouchStart={startDraw}
-          onTouchMove={continueDraw}
-          onTouchEnd={endDraw}
-        />
+        {/* Canvas area */}
+
+        <div className="flex-1 relative overflow-hidden">
+          {phase !== "animate" && (
+            <Canvas
+              canvasRef={canvasRef}
+              rawPoints={rawPoints}
+              sampledPoints={sampledPoints}
+              isDrawing={isDrawing}
+              onMouseDown={startDraw}
+              onMouseMove={continueDraw}
+              onMouseUp={endDraw}
+              onMouseLeave={endDraw}
+              onTouchStart={startDraw}
+              onTouchMove={continueDraw}
+              onTouchEnd={endDraw}
+            />
+          )}
+          
+
+          {phase === "animate" && dftResult && (
+            <EpicycleCanvas
+              components={dftResult}
+              isPlaying={isPlaying}
+              speed={speed}
+              circleCount={circleCount}
+              showCircles={showCircles}
+            />
+          )}
+
+        </div>
 
         <Spectrum
           dftResult={dftResult}
