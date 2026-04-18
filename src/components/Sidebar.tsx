@@ -1,6 +1,4 @@
-import type { FreqComponent } from "../types";
-
-type Phase = "draw" | "ready" | "dft" | "animate";
+import type { FreqComponent, Phase } from "../types";
 
 interface SidebarProps{
     phase: Phase;

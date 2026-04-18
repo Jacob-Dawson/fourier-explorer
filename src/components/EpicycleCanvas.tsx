@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { FreqComponent } from "../types";
+import { drawGrid } from "../utils/canvas";
 
 interface EpicycleCanvasProps{
     components: FreqComponent[];
@@ -125,20 +126,27 @@ export default function EpicycleCanvas({
 
             if(trailRef.current.length > 1){
 
-                ctx.beginPath();
-                ctx.moveTo(trailRef.current[0].x, trailRef.current[0].y);
-                for(let i = 1; i < trailRef.current.length; i++){
+                const trail = trailRef.current;
+                const len = trail.length;
+ 
+                for(let i = 1; i < len; i++){
 
-                    ctx.lineTo(trailRef.current[i].x, trailRef.current[i].y);
+                    const t = i / len;
+                    const opacity = t * t;
+
+                    ctx.beginPath();
+                    ctx.moveTo(trail[i-1].x, trail[i-1].y);
+                    ctx.lineTo(trail[i].x, trail[i].y);
+                    ctx.strokeStyle = `rgba(251,191,36,${opacity}`;
+                    ctx.lineWidth = 1 + t * 1.5;
+                    ctx.lineJoin = "round";
+                    ctx.lineCap = "round";
+                    ctx.shadowColor = "#fbbf24";
+                    ctx.shadowBlur = t * 8;
+                    ctx.stroke();
 
                 }
-                ctx.strokeStyle = "#fbbf24";
-                ctx.lineWidth = 2;
-                ctx.lineJoin = "round";
-                ctx.lineCap = "round";
-                ctx.shadowColor = "#fbbf24";
-                ctx.shadowBlur = 6;
-                ctx.stroke();
+                
                 ctx.shadowBlur = 0;
 
             }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { FreqComponent } from "./types";
+import type { FreqComponent, Phase } from "./types";
 import { computeDFT } from "./utils/dft";
 import { useDrawing } from "./hooks/useDrawing";
 import { useEpicycles } from "./hooks/useEpicycles";
@@ -7,8 +7,6 @@ import Canvas from "./components/Canvas";
 import Sidebar from "./components/Sidebar";
 import Spectrum from "./components/Spectrum";
 import EpicycleCanvas from "./components/EpicycleCanvas";
-
-type Phase = "draw" | "ready" | "dft" | "animate";
 
 export default function App() {
 

@@ -5,8 +5,10 @@ export interface Point{
 
 export interface FreqComponent{
     freq: number; // harmonic (k)
-    amp: number; // cricle radius |X[k]|
+    amp: number; // circle radius |X[k]|
     phase: number; // starting angle arg(X[k])
     re: number;
     im: number;
 }
+
+export type Phase = "draw" | "ready" | "dft" | "animate";
