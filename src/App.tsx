@@ -7,6 +7,9 @@ import Canvas from "./components/Canvas";
 import Sidebar from "./components/Sidebar";
 import Spectrum from "./components/Spectrum";
 import EpicycleCanvas from "./components/EpicycleCanvas";
+import PresetBar from "./components/PresetBar";
+import { generatePreset } from "./utils/presets";
+import type { PresetName } from "./utils/presets";
 
 export default function App() {
 
@@ -43,6 +46,15 @@ export default function App() {
     if(sampledPoints) setPhase("ready");
 
   }, [sampledPoints]);
+
+  const handlePreset = (name: PresetName) => {
+    if(!canvasRef.current) return;
+    const { width, height } = canvasRef.current;
+    const points = generatePreset(name, width / 2, height / 2);
+    const result = computeDFT(points);
+    setDftResult(result);
+    setPhase("animate");
+  };
 
   const handleRunDFT = () => {
     if(!sampledPoints) return;
@@ -107,6 +119,8 @@ export default function App() {
             </span>
         </div>
       </header>
+
+      <PresetBar onSelect={handlePreset} />
 
       {/* Main layout */}
       <div className="flex flex-1 min-h-0">
