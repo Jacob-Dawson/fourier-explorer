@@ -82,16 +82,6 @@ export default function App() {
     setDftResult(null);
     setPhase("draw");
   }
-
-  const stepNumber = 
-    phase === "animate" ? "04" :
-    phase === "dft" ? "03" : 
-    phase === "ready" ? "02" : "01";
-
-  const stepLabel = 
-    phase === "animate" ? "Controls" :
-    phase === "dft" ? "Animating" :
-    phase === "ready" ? "DFT Ready" : "Draw Mode";
   
   return (
     <div
@@ -112,19 +102,6 @@ export default function App() {
             </div>
             <span className="text-xs tracking-[0.25em] uppercase text-cyan-400/60">
                 Fourier Transform Explorer
-            </span>
-        </div>
-
-        <div className="flex items-center gap-6 text-[10px] tracking-widest uppercase text-cyan-400/40">
-            <span>
-              Step{" "}
-              <span className="text-cyan-400 font-bold">
-                  {stepNumber}
-              </span>
-              {" / "}04
-            </span>
-            <span>
-                {stepLabel}
             </span>
         </div>
       </header>
@@ -182,7 +159,7 @@ export default function App() {
         {/* Floating controls button - mobile / tablet only */}
         <button
           onClick={() => setDrawerOpen(true)}
-          className="lg:hidden fixed bottom-6 right-6 z-10 w-12 h-12 border border-cyan-400/50 bg-[#0a0a0f] text-cyan-400 text-xs tracking-widest flex items-center justify-center shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:bg-cyan-400 hover:text-black transition-all"
+          className="lg:hidden fixed bottom-6 right-6 z-10 w-12 h-12 border border-cyan-400/50 bg-[#0a0a0f] text-cyan-400 text-xs tracking-widest flex items-center justify-center shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:bg-cyan-400 hover:text-black transition-all cursor-pointer"
         >
           ⚙
         </button>

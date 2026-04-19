@@ -1,18 +1,6 @@
 import type { Point } from "../types";
 
-export type PresetName = "circle" | "star" | "heart" | "figure8" | "trefoil" | "lissajous" | "square" | "astroid" | "deltoid";
-
-export const PRESETS: { name: PresetName; label: string }[] = [
-    {name: "circle", label: "Circle"},
-    {name: "star", label: "Star"},
-    {name: "heart", label: "Heart"},
-    {name: "figure8", label: "Figure-8"},
-    {name: "trefoil", label: "Trefoil"},
-    {name: "lissajous", label: "Lissajous"},
-    {name: "square", label: "Square"},
-    {name: "astroid", label: "Asteroid"},
-    {name: "deltoid", label: "Deltoid"}
-];
+export type PresetName = "circle" | "star" | "heart" | "figure8" | "trefoil" | "lissajous" | "square" | "astroid" | "deltoid" | "triangle" | "pentagon" | "hexagon" | "oval";
 
 export function generatePreset(
     name: PresetName,
@@ -88,6 +76,45 @@ export function generatePreset(
                 x = cx + r * (2 * Math.cos(t) + Math.cos(2 * t)) / 3;
                 y = cy + r * (2 * Math.sin(t) - Math.sin(2 * t)) / 3;
                 break;
+
+            case "oval":
+                x = cx + r * Math.cos(t);
+                y = cy + r * 0.55 * Math.sin(t);
+                break;
+
+            case "triangle": {
+                // Smooth parametric triangle
+                const sides = 3;
+                const corner = Math.floor((t / (Math.PI * 2)) * sides);
+                const localT = (t / (Math.PI * 2)) * sides - corner;
+                const a1 = (corner / sides) * Math.PI * 2 - Math.PI / 2;
+                const a2 = ((corner + 1) / sides) * Math.PI * 2 - Math.PI / 2;
+                x = cx + r * (Math.cos(a1) + localT * (Math.cos(a2) - Math.cos(a1)));
+                y = cy + r * (Math.sin(a1) + localT * (Math.sin(a2) - Math.sin(a1)));
+                break;
+            }
+
+            case "pentagon":{
+                const sides = 5;
+                const corner = Math.floor((t / (Math.PI * 2)) * sides);
+                const localT = (t / (Math.PI * 2)) * sides - corner;
+                const a1 = (corner / sides) * Math.PI * 2 - Math.PI / 2;
+                const a2 = ((corner + 1) / sides) * Math.PI * 2 - Math.PI / 2;
+                x = cx + r * (Math.cos(a1) + localT * (Math.cos(a2) - Math.cos(a1)));
+                y = cy + r * (Math.sin(a1) + localT * (Math.sin(a2) - Math.sin(a1)));
+                break;
+            }
+
+            case "hexagon":{
+                const sides = 6;
+                const corner = Math.floor((t / (Math.PI * 2)) * sides);
+                const localT = (t / (Math.PI * 2)) * sides - corner;
+                const a1 = (corner / sides) * Math.PI * 2 - Math.PI / 2;
+                const a2 = ((corner + 1) / sides) * Math.PI * 2 - Math.PI / 2;
+                x = cx + r * (Math.cos(a1) + localT * (Math.cos(a2) - Math.cos(a1)));
+                y = cy + r * (Math.sin(a1) + localT * (Math.sin(a2) - Math.sin(a1)));
+                break;
+            }
         }
 
         points.push({x,y})
