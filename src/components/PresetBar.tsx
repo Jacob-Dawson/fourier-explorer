@@ -29,7 +29,7 @@ const CATEGORIES: Category[] = [
             { name: "heart",   label: "Heart",    symbol: "♡" },
             { name: "star",    label: "Star",     symbol: "✦" },
             { name: "figure8", label: "Figure-8", symbol: "∞" },
-            { name: "trefoil", label: "Trefoil",  symbol: "☘" },
+            { name: "trefoil", label: "Trefoil",  symbol: "☘" }
         ],
     },
     {
@@ -37,8 +37,17 @@ const CATEGORIES: Category[] = [
         presets: [
             { name: "lissajous", label: "Lissajous", symbol: "⌇" },
             { name: "astroid",   label: "Astroid",   symbol: "✴" },
-            { name: "deltoid",   label: "Deltoid",   symbol: "◬" },
+            { name: "deltoid",   label: "Deltoid",   symbol: "◬" }
         ],
+    },
+    {
+        label: "Famous",
+        presets: [
+            { name: "cardioid",     label: "Cardioid",     symbol: "♾" },
+            { name: "hypotrochoid", label: "Spirograph",   symbol: "✿" },
+            { name: "butterfly",    label: "Butterfly",    symbol: "🦋" },
+            { name: "rose4",        label: "Rose",         symbol: "✾" }
+        ]
     }
 ];
 

@@ -92,7 +92,7 @@ export default function Spectrum({ dftResult, sampledPoints}: SpectrumProps){
 
     return (
 
-        <aside className="w-40 border-1 border-cyan-400/10 p-4 flex flex-col gap-3 shrink-0">
+        <aside className="w-40 border border-cyan-400/10 p-4 flex flex-col gap-3 shrink-0">
             <span className="text-[9px] tracking-[0.25em] uppercase text-cyan-400/30">
                 {dftResult ? "Amplitude Spectrum" : "Freq Spectrum"}
             </span>

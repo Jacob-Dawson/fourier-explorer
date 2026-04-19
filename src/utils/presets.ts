@@ -1,6 +1,6 @@
 import type { Point } from "../types";
 
-export type PresetName = "circle" | "star" | "heart" | "figure8" | "trefoil" | "lissajous" | "square" | "astroid" | "deltoid" | "triangle" | "pentagon" | "hexagon" | "oval";
+export type PresetName = "circle" | "star" | "heart" | "figure8" | "trefoil" | "lissajous" | "square" | "astroid" | "deltoid" | "triangle" | "pentagon" | "hexagon" | "oval" | "cardioid" | "hypotrochoid" | "butterfly" | "rose4";
 
 export function generatePreset(
     name: PresetName,
@@ -16,6 +16,10 @@ export function generatePreset(
         // Trefoil (3-petal rose)
         const t = name === "trefoil"
             ? (i / n) * Math.PI
+            : name === "butterfly"
+            ? (i / n) * (Math.PI * 4)
+            : name === "hypotrochoid"
+            ? (i / n) * (Math.PI * 6)
             : (i / n) * (Math.PI * 2);
 
         let x = 0;
@@ -115,6 +119,31 @@ export function generatePreset(
                 y = cy + r * (Math.sin(a1) + localT * (Math.sin(a2) - Math.sin(a1)));
                 break;
             }
+
+            case "cardioid":
+                x = cx + r * 0.5 * (2 * Math.cos(t) - Math.cos(2 * t));
+                y = cy + r * 0.5 * (2 * Math.sin(t) - Math.sin(2 * t));
+                break;
+
+            case "hypotrochoid":{
+                // Spirograph
+                const R = 5, rr = 3, d = 5;
+                x = cx + (r / (R + d)) * ((R - rr) * Math.cos(t) + d * Math.cos((R - rr) / rr * t));
+                y = cy + (r / (R + d)) * ((R - rr) * Math.sin(t) - d * Math.sin((R - rr) / rr * t));
+                break;
+            }
+
+            case "butterfly":
+                // Butterfly curve
+                x = cx + (r / 4) * Math.sin(t) * (Math.exp(Math.cos(t)) - 2 * Math.cos(4 * t) - Math.pow(Math.sin(t / 12), 5));
+                y = cy - (r / 4) * Math.cos(t) * (Math.exp(Math.cos(t)) - 2 * Math.cos(4 * t) - Math.pow(Math.sin(t / 12), 5));
+                break;
+
+            case "rose4":
+                // 4-petal rose
+                x = cx + r * Math.cos(2 * t) * Math.cos(t);
+                y = cy + r * Math.cos(2 * t) * Math.sin(t);
+                break;
         }
 
         points.push({x,y})

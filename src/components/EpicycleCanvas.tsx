@@ -7,6 +7,8 @@ interface EpicycleCanvasProps{
     speed: number;
     circleCount: number;
     showCircles: boolean;
+    isRotating: boolean;
+    scale: number;
 }
 
 export default function EpicycleCanvas({
@@ -14,12 +16,15 @@ export default function EpicycleCanvas({
     isPlaying,
     speed,
     circleCount,
-    showCircles
+    showCircles,
+    isRotating,
+    scale
 }: EpicycleCanvasProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const rafRef = useRef<number>(0);
     const timeRef = useRef<number>(0);
     const trailRef = useRef<{x: number; y: number}[]>([]);
+    const rotationRef = useRef<number>(0)
 
     // Resize canvas to fill parent
     useEffect(() => {
@@ -74,6 +79,16 @@ export default function EpicycleCanvas({
                 ctx.stroke();
 
             }
+
+            if(isRotating){
+                rotationRef.current += 0.002;
+            }
+
+            ctx.save();
+            ctx.translate(width / 2, height / 2);
+            ctx.rotate(rotationRef.current);
+            ctx.scale(scale, scale);
+            ctx.translate(-width / 2, -height / 2);
 
             // Epicycle Chain
             // Start at canvas center
@@ -164,6 +179,8 @@ export default function EpicycleCanvas({
             ctx.fill();
             ctx.shadowBlur = 0;
 
+            ctx.restore();
+
             // Advance Time
             if(isPlaying){
                 timeRef.current += speed;
@@ -176,13 +193,14 @@ export default function EpicycleCanvas({
         return () => cancelAnimationFrame(rafRef.current);
 
         // recreate the loop whenever these change
-    }, [components, isPlaying, speed, circleCount, showCircles]);
+    }, [components, isPlaying, speed, circleCount, showCircles, isRotating, scale]);
 
     // Clear trail when circle count changes so it doesnt glitch
     useEffect(() => {
         trailRef.current = [];
         timeRef.current = 0;
-    }, [components, circleCount, speed]);
+        rotationRef.current = 0;
+    }, [components, circleCount, speed, isRotating]);
 
     return (
         <canvas

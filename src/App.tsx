@@ -36,11 +36,15 @@ export default function App() {
     speed,
     circleCount,
     showCircles,
+    isRotating,
+    scale,
     play,
     pause,
     setSpeed,
     setCircleCount,
-    toggleCircles
+    toggleCircles,
+    toggleRotation,
+    setScale
   } = useEpicycles(dftResult?.length ?? 256)
 
   // When a new path is finished, advance to ready
@@ -125,6 +129,8 @@ export default function App() {
             circleCount={circleCount}
             showCircles={showCircles}
             closePath={closePath}
+            isRotating={isRotating}
+            scale={scale}
             onRunDFT={handleRunDFT}
             onAnimate={handleAnimate}
             onClear={handleClear}
@@ -134,6 +140,8 @@ export default function App() {
             onSetCircleCount={setCircleCount}
             onToggleCircles={toggleCircles}
             onToggleClosePath={() => setClosePath(p => !p)}
+            onToggleRotation={toggleRotation}
+            onSetScale={setScale}
           />
         </div>
 
@@ -150,6 +158,8 @@ export default function App() {
             circleCount={circleCount}
             showCircles={showCircles}
             closePath={closePath}
+            isRotating={isRotating}
+            scale={scale}
             onRunDFT={handleRunDFT}
             onAnimate={handleAnimate}
             onClear={handleClear}
@@ -159,6 +169,8 @@ export default function App() {
             onSetCircleCount={setCircleCount}
             onToggleCircles={toggleCircles}
             onToggleClosePath={() => setClosePath(p => !p)}
+            onToggleRotation={toggleRotation}
+            onSetScale={setScale}
           />
         </Drawer>
 
@@ -197,6 +209,8 @@ export default function App() {
               speed={speed}
               circleCount={circleCount}
               showCircles={showCircles}
+              isRotating={isRotating}
+              scale={scale}
             />
           )}
 

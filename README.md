@@ -1,73 +1,117 @@
-# React + TypeScript + Vite
+# Fourier Transform Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive browser-based visualisation of the Discrete Fourier Transform. Draw any shape, pick a preset, and watch it decomposed into a chain of rotating circles — each one a single frequency component from the DFT.
 
-Currently, two official plugins are available:
+🔗 **[Live Demo](#)** · [GitHub](https://github.com/Jacob-Dawson)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+![Fourier Transform Explorer](./preview.gif)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## What it does
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The app takes a 2D path — either drawn freehand or selected from a preset library — samples it into 256 evenly-spaced points, runs a Discrete Fourier Transform, and animates the resulting frequency components as a chain of rotating circles (epicycles). The tip of the final circle traces out the original shape.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Reducing the circle count via the slider produces a lossy reconstruction — a great way to visually understand what "frequency content" means. Sharp-cornered shapes like the square and triangle show the [Gibbs phenomenon](https://en.wikipedia.org/wiki/Gibbs_phenomenon) clearly at low circle counts.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Features
+
+### Drawing
+- Freehand canvas drawing with mouse and touch support
+- Arc-length resampling — points are spaced evenly by distance travelled, not by time, so fast and slow strokes produce the same quality input
+- Closed / open path toggle — open paths use mirroring to avoid the periodic snap-back inherent to the DFT
+- Auto-advances to animation on mouse-up — no extra clicks needed
+
+### Presets
+17 built-in shapes across four categories:
+
+| Geometric | Curves | Parametric | Famous |
+|-----------|--------|------------|--------|
+| Circle | Heart | Lissajous | Cardioid |
+| Oval | Star | Astroid | Spirograph |
+| Triangle | Figure-8 | Deltoid | Butterfly |
+| Square | Trefoil | | Rose (4-petal) |
+| Pentagon | | | |
+| Hexagon | | | |
+
+### Animation controls
+- Play / pause
+- Speed slider
+- Circle count slider — reduce to see lossy reconstruction
+- Scale slider
+- Show / hide circles and arms
+- Casual rotation toggle — slowly rotates the entire epicycle system
+- Fading trail — older path segments fade out with decreasing opacity and line width
+
+### Amplitude spectrum
+- Real-time log-scale frequency spectrum displayed in the sidebar
+- Updates live as the DFT result changes
+
+### Responsive layout
+- **Desktop** — full three-panel layout with sidebar, canvas, and spectrum panel
+- **Tablet / Mobile** — canvas fills the screen, controls accessible via a bottom drawer
+
+---
+
+## Tech stack
+
+- [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [Tailwind CSS v4](https://tailwindcss.com/)
+- HTML5 Canvas API for all rendering and animation
+
+No animation libraries. No DFT libraries. Everything is implemented from scratch.
+
+---
+
+## Project structure
+
+src/
+├── components/
+│   ├── Canvas.tsx          # Freehand drawing surface
+│   ├── EpicycleCanvas.tsx  # rAF animation loop and epicycle rendering
+│   ├── Sidebar.tsx         # Controls panel
+│   ├── Spectrum.tsx        # Amplitude spectrum display
+│   ├── PresetBar.tsx       # Preset shape selector
+│   └── Drawer.tsx          # Mobile bottom sheet
+├── hooks/
+│   ├── useDrawing.ts       # Pointer events, path sampling
+│   └── useEpicycles.ts     # Playback controls state
+├── utils/
+│   ├── dft.ts              # Discrete Fourier Transform (O(N²) naive implementation)
+│   ├── resample.ts         # Arc-length path resampling
+│   ├── presets.ts          # Parametric curve generators
+│   └── canvas.ts           # Shared canvas drawing helpers
+├── types/
+│   └── index.ts            # Shared TypeScript types
+└── App.tsx
+
+---
+
+## How to run locally
+
+```bash
+git clone https://github.com/Jacob-Dawson/fourier-explorer
+cd fourier-explorer
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## The maths in one line
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Each point on the path is treated as a complex number `z[n] = x[n] + i·y[n]`. The DFT computes:
+X[k] = Σ(n=0..N-1)  z[n] · e^(-2πi·k·n/N)
+
+Each `X[k]` describes one rotating circle: `|X[k]|` is its radius and `arg(X[k])` is its starting angle. Summing all circles tip-to-tail reconstructs the original path.
+
+---
+
+## License
+
+MIT

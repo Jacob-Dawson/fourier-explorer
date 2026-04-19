@@ -12,6 +12,8 @@ interface SidebarProps{
     circleCount: number;
     showCircles: boolean;
     closePath: boolean;
+    isRotating: boolean;
+    scale: number;
     // Callbacks
     onRunDFT: () => void;
     onAnimate: () => void;
@@ -22,6 +24,8 @@ interface SidebarProps{
     onSetCircleCount: (n: number) => void;
     onToggleCircles: () => void;
     onToggleClosePath: () => void;
+    onToggleRotation: () => void;
+    onSetScale: (s: number) => void;
 }
 
 // Small reuseable primitives
@@ -98,6 +102,8 @@ export default function Sidebar({
     circleCount,
     showCircles,
     closePath,
+    isRotating,
+    scale,
     onRunDFT,
     onAnimate,
     onClear,
@@ -106,7 +112,9 @@ export default function Sidebar({
     onSetSpeed,
     onSetCircleCount,
     onToggleCircles,
-    onToggleClosePath
+    onToggleClosePath,
+    onToggleRotation,
+    onSetScale
 }: SidebarProps) {
 
     const statusLabel = 
@@ -178,6 +186,15 @@ export default function Sidebar({
             >
               {showCircles ? "Hide" : "Show"}
             </button>
+            <button
+              onClick={onToggleRotation}
+              className={`flex-1 text-[10px] tracking-widest uppercase py-1.5 border transition-all cursor-pointer
+                ${isRotating
+                  ? "border-cyan-400 text-cyan-400 bg-cyan-400/10"
+                  : "border-cyan-400/50 text-cyan-400/50 hover:border-cyan-400 hover:text-cyan-400"}`}
+            >
+              {isRotating ? "Spin ✦" : "Spin"}
+          </button>
           </div>
 
           <Slider
@@ -195,6 +212,15 @@ export default function Sidebar({
             min={1}
             max={dftResult?.length ?? 256}
             onChange={onSetCircleCount}
+          />
+
+          <Slider
+            label="Scale"
+            value={scale}
+            min={0.2}
+            max={3}
+            step={0.1}
+            onChange={onSetScale}
           />
         </Section>
       )}
@@ -215,7 +241,7 @@ export default function Sidebar({
             onClick={onAnimate}
             className="text-[10px] tracking-widest uppercase px-3 py-2.5 border transition-all
               border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black cursor-pointer
-              shadow-[0_0_12px_rgba(251,191,36,0.3)]"
+              shadow-[0_0_12px_rgba(34,211,238,0.3)]"
           >
             Animate →
           </button>
@@ -227,7 +253,7 @@ export default function Sidebar({
             disabled={phase !== "ready"}
             className={`text-[10px] tracking-widest uppercase px-3 py-2.5 border transition-all
               ${phase === "ready"
-                ? "border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black cursor-pointer shadow-[0_0_12px_rgba(251,191,36,0.3)]"
+                ? "border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black cursor-pointer shadow-[0_0_12px_rgba(34,211,238,0.3)]"
                 : "border-cyan-400/10 text-cyan-400/20 cursor-not-allowed"}`}
           >
             Run DFT →
