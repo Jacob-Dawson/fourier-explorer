@@ -117,7 +117,7 @@ export default function Sidebar({
         phase === "ready" ? 2 : 0;
 
     return (
-    <aside className="w-52 border-r border-cyan-400/10 p-5 flex flex-col gap-6 shrink-0 overflow-y-auto">
+    <aside className="w-full lg:w-52 border-r border-cyan-400/10 p-5 flex flex-col gap-6 shrink-0 overflow-y-auto">
 
       <Section label="Instructions">
         <p className="text-[11px] text-cyan-400/50 leading-relaxed">

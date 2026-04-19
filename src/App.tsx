@@ -1,3 +1,4 @@
+import Drawer from "./components/Drawer";
 import { useState, useEffect } from "react";
 import type { FreqComponent, Phase } from "./types";
 import { computeDFT } from "./utils/dft";
@@ -15,6 +16,7 @@ export default function App() {
 
   const [phase, setPhase] = useState<Phase>("draw");
   const [dftResult, setDftResult] = useState<FreqComponent[] | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const {
     canvasRef,
@@ -131,25 +133,59 @@ export default function App() {
 
       {/* Main layout */}
       <div className="flex flex-1 min-h-0">
-        <Sidebar
-          phase={phase}
-          isDrawing={isDrawing}
-          rawPointCount={rawPoints.length}
-          sampledPointCount={sampledPoints?.length ?? null}
-          dftResult={dftResult}
-          isPlaying={isPlaying}
-          speed={speed}
-          circleCount={circleCount}
-          showCircles={showCircles}
-          onRunDFT={handleRunDFT}
-          onAnimate={handleAnimate}
-          onClear={handleClear}
-          onPlay={play}
-          onPause={pause}
-          onSetSpeed={setSpeed}
-          onSetCircleCount={setCircleCount}
-          onToggleCircles={toggleCircles}
-        />
+        {/* Desktop Sidebar */}
+        <div className="hidden lg:block">
+          <Sidebar
+            phase={phase}
+            isDrawing={isDrawing}
+            rawPointCount={rawPoints.length}
+            sampledPointCount={sampledPoints?.length ?? null}
+            dftResult={dftResult}
+            isPlaying={isPlaying}
+            speed={speed}
+            circleCount={circleCount}
+            showCircles={showCircles}
+            onRunDFT={handleRunDFT}
+            onAnimate={handleAnimate}
+            onClear={handleClear}
+            onPlay={play}
+            onPause={pause}
+            onSetSpeed={setSpeed}
+            onSetCircleCount={setCircleCount}
+            onToggleCircles={toggleCircles}
+          />
+        </div>
+
+        {/* Mobile / Tablet drawer */}
+        <Drawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)}>
+          <Sidebar
+            phase={phase}
+            isDrawing={isDrawing}
+            rawPointCount={rawPoints.length}
+            sampledPointCount={sampledPoints?.length ?? null}
+            dftResult={dftResult}
+            isPlaying={isPlaying}
+            speed={speed}
+            circleCount={circleCount}
+            showCircles={showCircles}
+            onRunDFT={handleRunDFT}
+            onAnimate={handleAnimate}
+            onClear={handleClear}
+            onPlay={play}
+            onPause={pause}
+            onSetSpeed={setSpeed}
+            onSetCircleCount={setCircleCount}
+            onToggleCircles={toggleCircles}
+          />
+        </Drawer>
+
+        {/* Floating controls button - mobile / tablet only */}
+        <button
+          onClick={() => setDrawerOpen(true)}
+          className="lg:hidden fixed bottom-6 right-6 z-10 w-12 h-12 border border-cyan-400/50 bg-[#0a0a0f] text-cyan-400 text-xs tracking-widest flex items-center justify-center shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:bg-cyan-400 hover:text-black transition-all"
+        >
+          ⚙
+        </button>
 
         {/* Canvas area */}
 
@@ -182,11 +218,13 @@ export default function App() {
           )}
 
         </div>
-
-        <Spectrum
-          dftResult={dftResult}
-          sampledPoints={sampledPoints}
-        />
+        
+        <div className="hidden lg:block">
+          <Spectrum
+            dftResult={dftResult}
+            sampledPoints={sampledPoints}
+          />
+        </div>
       </div>
 
       {/* Footer */}
