@@ -70,6 +70,7 @@ No animation libraries. No DFT libraries. Everything is implemented from scratch
 
 ## Project structure
 
+```
 src/
 ├── components/
 │   ├── Canvas.tsx          # Freehand drawing surface
@@ -90,6 +91,7 @@ src/
 │   └── index.ts            # Shared TypeScript types
 └── App.tsx
 
+```
 ---
 
 ## How to run locally
