@@ -136,12 +136,12 @@ export default function EpicycleCanvas({
                 for(let i = 1; i < len; i++){
 
                     const t = i / len;
-                    const opacity = t * t;
-
+                    const opacity = Math.min(1, Math.max(0, t * t));
+                    
                     ctx.beginPath();
                     ctx.moveTo(trail[i-1].x, trail[i-1].y);
                     ctx.lineTo(trail[i].x, trail[i].y);
-                    ctx.strokeStyle = `rgba(34,211,238,${opacity}`;
+                    ctx.strokeStyle = `rgba(34,211,238,${opacity})`;
                     ctx.lineWidth = 1 + t * 1.5;
                     ctx.lineJoin = "round";
                     ctx.lineCap = "round";

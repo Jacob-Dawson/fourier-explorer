@@ -11,6 +11,7 @@ interface SidebarProps{
     speed: number;
     circleCount: number;
     showCircles: boolean;
+    closePath: boolean;
     // Callbacks
     onRunDFT: () => void;
     onAnimate: () => void;
@@ -20,6 +21,7 @@ interface SidebarProps{
     onSetSpeed: (s: number) => void;
     onSetCircleCount: (n: number) => void;
     onToggleCircles: () => void;
+    onToggleClosePath: () => void;
 }
 
 // Small reuseable primitives
@@ -95,6 +97,7 @@ export default function Sidebar({
     speed,
     circleCount,
     showCircles,
+    closePath,
     onRunDFT,
     onAnimate,
     onClear,
@@ -102,7 +105,8 @@ export default function Sidebar({
     onPause,
     onSetSpeed,
     onSetCircleCount,
-    onToggleCircles
+    onToggleCircles,
+    onToggleClosePath
 }: SidebarProps) {
 
     const statusLabel = 
@@ -110,11 +114,6 @@ export default function Sidebar({
         phase === "dft" ? "DONE" :
         phase === "ready" ? "READY" :
         isDrawing ? "DRAWING" : "IDLE";
-
-    const stepsDone = 
-        phase === "animate" ? 4 :
-        phase === "dft" ? 3 : 
-        phase === "ready" ? 2 : 0;
 
     return (
     <aside className="w-full lg:w-52 border-r border-cyan-400/10 p-5 flex flex-col gap-6 shrink-0 overflow-y-auto">
@@ -127,6 +126,15 @@ export default function Sidebar({
             ? "DFT complete. Hit Animate to watch the epicycles draw your shape."
             : "Draw any shape. The path is sampled into 256 points then fed to the DFT."}
         </p>
+        <button
+          onClick={onToggleClosePath}
+          className={`mt-1 text-[9px] tracking-widest uppercase px-2.5 py-1 rounded-full border transition-all cursor-pointer ${closePath
+            ? "border-cyan-400/50 text-cyan-400/50 hover:border-cyan-400 hover:text-cyan-400"
+            : "border-cyan-400 text-cyan-400 bg-cyan-400/10"
+          }`}
+        >
+          {closePath ? "● Closed path" : "○ Open path"}
+        </button>
       </Section>
 
       <Section label="Path Data">
@@ -190,25 +198,6 @@ export default function Sidebar({
           />
         </Section>
       )}
-
-      <Section label="Steps">
-        <ol className="text-[10px] leading-relaxed list-none space-y-1.5">
-          {["Draw path", "Run DFT", "Animate epicycles", "Controls"].map((s, i) => {
-            const done = i < stepsDone;
-            const active = i === stepsDone;
-            return (
-              <li key={i} className={`flex items-center gap-2 ${active || done ? "text-cyan-400" : "text-cyan-400/30"}`}>
-                <span className={`w-4 h-4 rounded-full border flex items-center justify-center
-                  text-[9px] shrink-0
-                  ${active || done ? "border-cyan-400 text-cyan-400" : "border-cyan-400/20"}`}>
-                  {done ? "✓" : i + 1}
-                </span>
-                {s}
-              </li>
-            );
-          })}
-        </ol>
-      </Section>
 
       <div className="flex-1" />
 

@@ -10,6 +10,8 @@ interface UseDrawingReturn {
     rawPoints: Point[];
     sampledPoints: Point[] | null;
     isDrawing: boolean;
+    closePath: boolean;
+    setClosePath: (v: boolean | ((prev: boolean) => boolean)) => void;
     startDraw: (e: React.MouseEvent | React.TouchEvent) => void;
     continueDraw: (e: React.MouseEvent | React.TouchEvent) => void;
     endDraw: (e: React.MouseEvent | React.TouchEvent) => void;
@@ -22,6 +24,7 @@ export function useDrawing(): UseDrawingReturn{
     const [rawPoints, setRawPoints] = useState<Point[]>([]);
     const [sampledPoints, setSampledPoints] = useState<Point[] | null>(null);
     const [isDrawing, setIsDrawing] = useState(false);
+    const [closePath, setClosePath] = useState(true);
 
     const getPos = useCallback((e: React.MouseEvent | React.TouchEvent): Point | null => {
         if(!canvasRef.current) return null;
@@ -56,10 +59,13 @@ export function useDrawing(): UseDrawingReturn{
         setRawPoints(prev => {
             if(prev.length < MIN_POINTS) return [];
             const sampled = resamplePath(prev, SAMPLE_COUNT);
-            setSampledPoints(sampled);
+            const finalPoints = closePath
+                ? [...sampled, sampled[0]]
+                : [...sampled, ...[...sampled].reverse()];
+            setSampledPoints(finalPoints);
             return prev;
         });
-    }, [isDrawing, getPos])
+    }, [isDrawing, getPos, closePath])
 
     const clear = useCallback(() => {
         setRawPoints([]);
@@ -72,6 +78,8 @@ export function useDrawing(): UseDrawingReturn{
         rawPoints,
         sampledPoints,
         isDrawing,
+        closePath,
+        setClosePath,
         startDraw,
         continueDraw,
         endDraw,

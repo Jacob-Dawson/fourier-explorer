@@ -23,6 +23,8 @@ export default function App() {
     rawPoints,
     sampledPoints,
     isDrawing,
+    closePath,
+    setClosePath,
     startDraw,
     continueDraw,
     endDraw,
@@ -122,6 +124,7 @@ export default function App() {
             speed={speed}
             circleCount={circleCount}
             showCircles={showCircles}
+            closePath={closePath}
             onRunDFT={handleRunDFT}
             onAnimate={handleAnimate}
             onClear={handleClear}
@@ -130,6 +133,7 @@ export default function App() {
             onSetSpeed={setSpeed}
             onSetCircleCount={setCircleCount}
             onToggleCircles={toggleCircles}
+            onToggleClosePath={() => setClosePath(p => !p)}
           />
         </div>
 
@@ -145,6 +149,7 @@ export default function App() {
             speed={speed}
             circleCount={circleCount}
             showCircles={showCircles}
+            closePath={closePath}
             onRunDFT={handleRunDFT}
             onAnimate={handleAnimate}
             onClear={handleClear}
@@ -153,6 +158,7 @@ export default function App() {
             onSetSpeed={setSpeed}
             onSetCircleCount={setCircleCount}
             onToggleCircles={toggleCircles}
+            onToggleClosePath={() => setClosePath(p => !p)}
           />
         </Drawer>
 
@@ -214,7 +220,7 @@ export default function App() {
             dominant freq: k={dftResult[0].freq} r={dftResult[0].amp.toFixed(1)}
           </span>
         )}
-        <span>N = 256</span>   
+        <span>N = {dftResult ? dftResult.length : 256}</span>   
       </footer>
     </div>
   );

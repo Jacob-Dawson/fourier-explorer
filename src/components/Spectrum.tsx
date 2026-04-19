@@ -23,7 +23,8 @@ function AmplitudeSpectrum({components}: { components: FreqComponent[]}){
 
                     // Log scale so tiny harmonics are still visible
 
-                    const h = Math.log1p(c.amp) / Math.log1p(maxAmp);
+                    const raw = Math.log1p(c.amp) / Math.log1p(maxAmp);
+                    const h = isFinite(raw) ? raw : 0;                    
                     return (
                         <div
                             key={c.freq}
@@ -65,13 +66,17 @@ function PointDistribution({ points }: { points: Point[]}){
     return (
         <div className="flex-1 flex flex-col justify-end">
             <div className="flex items-end gap-px h-28">
-                {bars.map((v, i) => (
+                {bars.map((v, i) => {
+                    const ratio = v / maxBar;
+                    const safeRatio = isFinite(ratio) ? ratio : 0;
+                    return (
                     <div
                         key={i}
                         className="flex-1 bg-cyan-400 transition-all duration-500"
-                        style={{ height: `${(v / maxBar ) * 100}%`, opacity: 0.2 + (v / maxBar) * 0.7}}
+                        style={{ height: `${safeRatio * 100}%`, opacity: 0.2 + safeRatio * 0.7 }}                    
                     />
-                ))}
+                    );
+                })}
             </div>
             <p className="text-[8px] text-cyan-400/25 mt-1 tracking-wider">
                 point distribution
