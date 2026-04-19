@@ -28,7 +28,7 @@ function Section({ label, children}: { label: string; children: React.ReactNode}
 
     return (
         <div className="space-y-2">
-            <div className="text-[9px] tracking-[0.3em] uppercase text-amber-400/30 border-b border-amber-400/10 pb-1">
+            <div className="text-[9px] tracking-[0.3em] uppercase text-cyan-400/30 border-b border-cyan-400/10 pb-1">
                 {label}
             </div>
             {children}
@@ -45,10 +45,10 @@ function Readout({ label, value, highlight}: {
 
     return (
         <div className="flex justify-between items-baseline">
-            <span className="text-[10px] text-amber-400/40 tracking-wider">
+            <span className="text-[10px] text-cyan-400/40 tracking-wider">
                 {label}
             </span>
-            <span className={`text-[11px] font-bold tabular-nums ${highlight ? "text-amber-400" : "text-amber-400/70"}`}>
+            <span className={`text-[11px] font-bold tabular-nums ${highlight ? "text-cyan-400" : "text-cyan-400/70"}`}>
                 {value}
             </span>
         </div>
@@ -67,8 +67,8 @@ function Slider({label, value, min, max, step = 1, onChange}: {
     return (
         <div className="space-y-1">
             <div className="flex justify-between">
-                <span className="text-[10px] text-amber-400/40 tracking-wider">{label}</span>
-                <span className="text-[10px] text-amber-400/70 tabular-nums">{value}</span>
+                <span className="text-[10px] text-cyan-400/40 tracking-wider">{label}</span>
+                <span className="text-[10px] text-cyan-400/70 tabular-nums">{value}</span>
             </div>
             <input
                 type="range"
@@ -77,7 +77,7 @@ function Slider({label, value, min, max, step = 1, onChange}: {
                 step={step}
                 value={value}
                 onChange={e => onChange(Number(e.target.value))}
-                className="w-full accent-amber-400 cursor-pointer"
+                className="w-full accent-cyan-400 cursor-pointer"
             />
         </div>
     );
@@ -117,10 +117,10 @@ export default function Sidebar({
         phase === "ready" ? 1 : 0;
 
     return (
-    <aside className="w-52 border-r border-amber-400/10 p-5 flex flex-col gap-6 shrink-0 overflow-y-auto">
+    <aside className="w-52 border-r border-cyan-400/10 p-5 flex flex-col gap-6 shrink-0 overflow-y-auto">
 
       <Section label="Instructions">
-        <p className="text-[11px] text-amber-400/50 leading-relaxed">
+        <p className="text-[11px] text-cyan-400/50 leading-relaxed">
           {phase === "animate"
             ? "Epicycles are reconstructing your path. Adjust circles and speed below."
             : phase === "dft"
@@ -139,10 +139,10 @@ export default function Sidebar({
       {dftResult && (
         <Section label="Top Components">
           {dftResult.slice(0, 5).map((c, i) => (
-            <div key={i} className="flex justify-between text-[9px] py-0.5 border-b border-amber-400/5">
-              <span className="text-amber-400/40">k={c.freq}</span>
-              <span className="text-amber-400/70 tabular-nums">r={c.amp.toFixed(1)}</span>
-              <span className="text-amber-400/40 tabular-nums">
+            <div key={i} className="flex justify-between text-[9px] py-0.5 border-b border-cyan-400/5">
+              <span className="text-cyan-400/40">k={c.freq}</span>
+              <span className="text-cyan-400/70 tabular-nums">r={c.amp.toFixed(1)}</span>
+              <span className="text-cyan-400/40 tabular-nums">
                 {(c.phase * 180 / Math.PI).toFixed(0)}°
               </span>
             </div>
@@ -157,7 +157,7 @@ export default function Sidebar({
             <button
               onClick={isPlaying ? onPause : onPlay}
               className="flex-1 text-[10px] tracking-widest uppercase py-1.5 border
-                border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black transition-all"
+                border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all"
             >
               {isPlaying ? "Pause" : "Play"}
             </button>
@@ -165,8 +165,8 @@ export default function Sidebar({
               onClick={onToggleCircles}
               className={`flex-1 text-[10px] tracking-widest uppercase py-1.5 border transition-all
                 ${showCircles
-                  ? "border-amber-400/50 text-amber-400/50 hover:border-amber-400 hover:text-amber-400"
-                  : "border-amber-400 text-amber-400"}`}
+                  ? "border-cyan-400/50 text-cyan-400/50 hover:border-cyan-400 hover:text-cyan-400"
+                  : "border-cyan-400 text-cyan-400"}`}
             >
               {showCircles ? "Hide" : "Show"}
             </button>
@@ -197,10 +197,10 @@ export default function Sidebar({
             const done = i < stepsDone;
             const active = i === stepsDone;
             return (
-              <li key={i} className={`flex items-center gap-2 ${active || done ? "text-amber-400" : "text-amber-400/30"}`}>
+              <li key={i} className={`flex items-center gap-2 ${active || done ? "text-cyan-400" : "text-cyan-400/30"}`}>
                 <span className={`w-4 h-4 rounded-full border flex items-center justify-center
                   text-[9px] shrink-0
-                  ${active || done ? "border-amber-400 text-amber-400" : "border-amber-400/20"}`}>
+                  ${active || done ? "border-cyan-400 text-cyan-400" : "border-cyan-400/20"}`}>
                   {done ? "✓" : i + 1}
                 </span>
                 {s}
@@ -215,8 +215,8 @@ export default function Sidebar({
       <div className="flex flex-col gap-2">
         <button
           onClick={onClear}
-          className="text-[10px] tracking-widest uppercase px-3 py-2 border border-amber-400/20
-            text-amber-400/50 hover:text-amber-400 hover:border-amber-400/50 transition-colors"
+          className="text-[10px] tracking-widest uppercase px-3 py-2 border border-cyan-400/20
+            text-cyan-400/50 hover:text-cyan-400 hover:border-cyan-400/50 transition-colors"
         >
           Clear
         </button>
@@ -225,7 +225,7 @@ export default function Sidebar({
           <button
             onClick={onAnimate}
             className="text-[10px] tracking-widest uppercase px-3 py-2.5 border transition-all
-              border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black cursor-pointer
+              border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black cursor-pointer
               shadow-[0_0_12px_rgba(251,191,36,0.3)]"
           >
             Animate →
@@ -238,8 +238,8 @@ export default function Sidebar({
             disabled={phase !== "ready"}
             className={`text-[10px] tracking-widest uppercase px-3 py-2.5 border transition-all
               ${phase === "ready"
-                ? "border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black cursor-pointer shadow-[0_0_12px_rgba(251,191,36,0.3)]"
-                : "border-amber-400/10 text-amber-400/20 cursor-not-allowed"}`}
+                ? "border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black cursor-pointer shadow-[0_0_12px_rgba(251,191,36,0.3)]"
+                : "border-cyan-400/10 text-cyan-400/20 cursor-not-allowed"}`}
           >
             Run DFT →
           </button>

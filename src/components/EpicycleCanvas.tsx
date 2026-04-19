@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import type { FreqComponent } from "../types";
-import { drawGrid } from "../utils/canvas";
 
 interface EpicycleCanvasProps{
     components: FreqComponent[];
@@ -50,7 +49,7 @@ export default function EpicycleCanvas({
             ctx.clearRect(0,0,width,height);
             
             // Background grid
-            ctx.strokeStyle = "rgba(251,191,36,0.04)";
+            ctx.strokeStyle = "rgba(34,211,238,0.04)";
             ctx.lineWidth = 1;
             const step = 40;
             for(let x = 0; x <= width; x += step){
@@ -91,7 +90,7 @@ export default function EpicycleCanvas({
                     // Draw the orbit circle
                     ctx.beginPath();
                     ctx.arc(prevX, prevY, c.amp, 0, Math.PI*2);
-                    ctx.strokeStyle = "rgba(251,191,36,0.08)";
+                    ctx.strokeStyle = "rgba(34,211,238,0.08)";
                     ctx.lineWidth = 1;
                     ctx.stroke();
 
@@ -99,14 +98,14 @@ export default function EpicycleCanvas({
                     ctx.beginPath();
                     ctx.moveTo(prevX, prevY);
                     ctx.lineTo(x, y);
-                    ctx.strokeStyle = "rgba(251,191,36,0.25)";
+                    ctx.strokeStyle = "rgba(34,211,238,0.25)";
                     ctx.lineWidth = 1;
                     ctx.stroke();
 
                     // Draw a dot at the tip
                     ctx.beginPath();
                     ctx.arc(x, y, 2, 0, Math.PI*2);
-                    ctx.fillStyle = "rgba(251,191,36,0.5)";
+                    ctx.fillStyle = "rgba(34,211,238,0.5)";
                     ctx.fill();
 
                 }
@@ -137,11 +136,11 @@ export default function EpicycleCanvas({
                     ctx.beginPath();
                     ctx.moveTo(trail[i-1].x, trail[i-1].y);
                     ctx.lineTo(trail[i].x, trail[i].y);
-                    ctx.strokeStyle = `rgba(251,191,36,${opacity}`;
+                    ctx.strokeStyle = `rgba(34,211,238,${opacity}`;
                     ctx.lineWidth = 1 + t * 1.5;
                     ctx.lineJoin = "round";
                     ctx.lineCap = "round";
-                    ctx.shadowColor = "#fbbf24";
+                    ctx.shadowColor = "#22d3ee";
                     ctx.shadowBlur = t * 8;
                     ctx.stroke();
 
@@ -154,8 +153,8 @@ export default function EpicycleCanvas({
             // Draw a bright dot at the very tip
             ctx.beginPath();
             ctx.arc(x, y, 3, 0, Math.PI*2);
-            ctx.fillStyle = "#fbbf24";
-            ctx.shadowColor = "#fbbf24";
+            ctx.fillStyle = "#22d3ee";
+            ctx.shadowColor = "#22d3ee";
             ctx.shadowBlur = 10;
             ctx.fill();
             ctx.shadowBlur = 0;

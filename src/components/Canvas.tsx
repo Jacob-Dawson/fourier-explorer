@@ -81,10 +81,10 @@ export default function Canvas({
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
                     <div className="text-center space-y-2">
                         <p className="text-3xl opacity-10">✦</p>
-                        <p className="text-xs tracking-[0.3em] uppercase text-amber-400/20">
+                        <p className="text-xs tracking-[0.3em] uppercase text-cyan-400/20">
                             Draw anything here
                         </p>
-                        <p className="text-[10px] text-amber-400/10 tracking-widest">
+                        <p className="text-[10px] text-cyan-400/10 tracking-widest">
                             letters · shapes · spirals · squiggles
                         </p>
                     </div>
@@ -93,8 +93,8 @@ export default function Canvas({
 
             {/* Sample count badge shown after drawing */}
             {sampledPoints && !isDrawing && (
-                <div className="absolute bottom-5 right-5 z-10 text-[9px] tracking-widest uppercase text-amber-400/40 flex items-center gap-2">
-                    <span className="inline-block w-2 h-2 rounded-full bg-amber-400/50" />
+                <div className="absolute bottom-5 right-5 z-10 text-[9px] tracking-widest uppercase text-cyan-400/40 flex items-center gap-2">
+                    <span className="inline-block w-2 h-2 rounded-full bg-cyan-400/50" />
                     {sampledPoints.length} sample points
                 </div>
             )}

@@ -1,13 +1,17 @@
 import type { Point } from "../types";
 
-export type PresetName = "circle" | "star" | "heart" | "figure8" | "trefoil";
+export type PresetName = "circle" | "star" | "heart" | "figure8" | "trefoil" | "lissajous" | "square" | "astroid" | "deltoid";
 
 export const PRESETS: { name: PresetName; label: string }[] = [
     {name: "circle", label: "Circle"},
     {name: "star", label: "Star"},
     {name: "heart", label: "Heart"},
     {name: "figure8", label: "Figure-8"},
-    {name: "trefoil", label: "Trefoil"}
+    {name: "trefoil", label: "Trefoil"},
+    {name: "lissajous", label: "Lissajous"},
+    {name: "square", label: "Square"},
+    {name: "astroid", label: "Asteroid"},
+    {name: "deltoid", label: "Deltoid"}
 ];
 
 export function generatePreset(
@@ -63,6 +67,26 @@ export function generatePreset(
             case "trefoil":
                 x = cx + r * Math.cos(3 * t) * Math.cos(t);
                 y = cy + r * Math.cos(3 * t) * Math.sin(t);
+                break;
+
+            case "lissajous":
+                x = cx + r * Math.sin(3 * t + Math.PI / 2);
+                y = cy + r * Math.sin(2 * t);
+                break;
+
+            case "square":
+                x = cx + r * Math.cos(t) / Math.max(Math.abs(Math.cos(t)), Math.abs(Math.sin(t)));
+                y = cy + r * Math.sin(t) / Math.max(Math.abs(Math.cos(t)), Math.abs(Math.sin(t)));
+                break;
+
+            case "astroid":
+                x = cx + r * Math.pow(Math.cos(t), 3);
+                y = cy + r * Math.pow(Math.sin(t), 3);
+                break;
+
+            case "deltoid":
+                x = cx + r * (2 * Math.cos(t) + Math.cos(2 * t)) / 3;
+                y = cy + r * (2 * Math.sin(t) - Math.sin(2 * t)) / 3;
                 break;
         }
 
