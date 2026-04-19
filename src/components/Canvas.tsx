@@ -36,9 +36,12 @@ export default function Canvas({
 
     useEffect(() => {
 
-        const canvas = canvasRef.current!;
+        const canvas = canvasRef.current;
+        if(!canvas) return;
         const resize = () => {
-            const { width, height } = canvas.parentElement!.getBoundingClientRect();
+            const parent = canvas.parentElement;
+            if(!parent) return;
+            const { width, height } = parent.getBoundingClientRect();
             canvas.width = width;
             canvas.height = height;
             drawGrid(canvas);
@@ -52,7 +55,7 @@ export default function Canvas({
 
     useEffect(() => {
 
-        const canvas = canvasRef.current!;
+        const canvas = canvasRef.current;
         if(!canvas) return;
         drawGrid(canvas);
 

@@ -23,9 +23,12 @@ export default function EpicycleCanvas({
 
     // Resize canvas to fill parent
     useEffect(() => {
-        const canvas = canvasRef.current!;
+        const canvas = canvasRef.current;
+        if(!canvas) return;
         const resize = () => {
-            const { width, height } = canvas?.parentElement!.getBoundingClientRect();
+            const parent = canvas.parentElement;
+            if(!parent) return;
+            const { width, height } = parent.getBoundingClientRect();
             canvas.width = width;
             canvas.height = height;
             // Clear trail on resize to avoid glitchy jumps
@@ -38,8 +41,10 @@ export default function EpicycleCanvas({
 
     // Main animation loop
     useEffect(() => {
-        const canvas = canvasRef.current!;
-        const ctx = canvas.getContext("2d")!;
+        const canvas = canvasRef.current;
+        if(!canvas) return;
+        const ctx = canvas.getContext("2d");
+        if(!ctx) return;
         const N = components.length;
         // Only use as many circles as requested
         const active = components.slice(0, circleCount);

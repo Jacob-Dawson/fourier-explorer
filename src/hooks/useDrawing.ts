@@ -23,8 +23,9 @@ export function useDrawing(): UseDrawingReturn{
     const [sampledPoints, setSampledPoints] = useState<Point[] | null>(null);
     const [isDrawing, setIsDrawing] = useState(false);
 
-    const getPos = useCallback((e: React.MouseEvent | React.TouchEvent): Point => {
-        const rect = canvasRef.current!.getBoundingClientRect();
+    const getPos = useCallback((e: React.MouseEvent | React.TouchEvent): Point | null => {
+        if(!canvasRef.current) return null;
+        const rect = canvasRef.current.getBoundingClientRect();
         const src = (e as React.TouchEvent).touches
             ? (e as React.TouchEvent).touches[0]
             : (e as React.MouseEvent);
@@ -33,15 +34,19 @@ export function useDrawing(): UseDrawingReturn{
 
     const startDraw = useCallback((e: React.MouseEvent | React.TouchEvent) => {
         e.preventDefault();
+        const pos = getPos(e);
+        if(!pos) return;
         setSampledPoints(null);
-        setRawPoints([getPos(e)]);
+        setRawPoints([pos]);
         setIsDrawing(true);
     }, [getPos])
 
     const continueDraw = useCallback((e: React.MouseEvent | React.TouchEvent) => {
         e.preventDefault();
         if(!isDrawing) return;
-        setRawPoints(prev => [...prev, getPos(e)]);
+        const pos = getPos(e);
+        if(!pos) return;
+        setRawPoints(prev => [...prev, pos]);
     }, [isDrawing, getPos])
 
     const endDraw = useCallback((e: React.MouseEvent | React.TouchEvent) => {

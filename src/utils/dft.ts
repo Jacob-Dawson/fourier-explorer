@@ -8,11 +8,11 @@ Treats each sampled point as a complex number: z[n] = x[n] + i*y[n]
 
 X[k] = (sum)(n = 0.. N - 1) z[n] * e^(-2pii*k*n/N)
 
-
-
 */
 
 export function computeDFT(points: Point[]): FreqComponent[]{
+
+    if(points.length === 0) return [];
 
     const N = points.length;
 
