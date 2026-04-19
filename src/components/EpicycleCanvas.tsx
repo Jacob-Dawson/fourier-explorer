@@ -176,7 +176,8 @@ export default function EpicycleCanvas({
     // Clear trail when circle count changes so it doesnt glitch
     useEffect(() => {
         trailRef.current = [];
-    }, [circleCount, speed]);
+        timeRef.current = 0;
+    }, [components, circleCount, speed]);
 
     return (
         <canvas

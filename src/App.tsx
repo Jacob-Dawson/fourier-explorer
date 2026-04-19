@@ -43,13 +43,19 @@ export default function App() {
 
   useEffect(() => {
 
-    if(sampledPoints) setPhase("ready");
+    if(!sampledPoints) return;
 
+    const result = computeDFT(sampledPoints);
+    setDftResult(result);
+    setPhase("animate");
+    
   }, [sampledPoints]);
 
   const handlePreset = (name: PresetName) => {
-    if(!canvasRef.current) return;
-    const { width, height } = canvasRef.current;
+    const canvas = canvasRef.current;
+    // Fallback to canvas window dimensions if canvas isnt mounted
+    const width = canvas?.width ?? window.innerWidth;
+    const height = canvas?.height ?? window.innerHeight;
     const points = generatePreset(name, width / 2, height / 2);
     const result = computeDFT(points);
     setDftResult(result);
@@ -76,13 +82,14 @@ export default function App() {
   }
 
   const stepNumber = 
-    phase === "animate" ? "03" :
-    phase === "dft" ? "02" : "01";
+    phase === "animate" ? "04" :
+    phase === "dft" ? "03" : 
+    phase === "ready" ? "02" : "01";
 
   const stepLabel = 
-    phase === "animate" ? "Animating" :
-    phase === "dft" ? "DFT Computed" :
-    phase === "ready" ? "Path Ready" : "Draw Mode";
+    phase === "animate" ? "Controls" :
+    phase === "dft" ? "Animating" :
+    phase === "ready" ? "DFT Ready" : "Draw Mode";
   
   return (
     <div

@@ -112,9 +112,9 @@ export default function Sidebar({
         isDrawing ? "DRAWING" : "IDLE";
 
     const stepsDone = 
-        phase === "animate" ? 3 :
-        phase === "dft" ? 2 : 
-        phase === "ready" ? 1 : 0;
+        phase === "animate" ? 4 :
+        phase === "dft" ? 3 : 
+        phase === "ready" ? 2 : 0;
 
     return (
     <aside className="w-52 border-r border-cyan-400/10 p-5 flex flex-col gap-6 shrink-0 overflow-y-auto">
